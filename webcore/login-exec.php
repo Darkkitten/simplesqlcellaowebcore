@@ -50,12 +50,12 @@
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: login-form.php");
+		header("location: cellao.html");
 		exit();
 	}
 	
 	//Create query
-	$qry="SELECT * FROM login WHERE Username='$login' AND Password='".md5($_POST['password'])."'";
+	$qry="SELECT * FROM login WHERE login='$login' AND passwd='".md5($_POST['password'])."'";
 	$result=mysql_query($qry);
 	
 	//Check whether the query was successful or not
@@ -64,10 +64,9 @@
 			//Login Successful
 			session_regenerate_id();
 			$member = mysql_fetch_assoc($result);
-			$_SESSION['SESS_MEMBER_ID'] = $member['id'];
-			$_SESSION['SESS_CREATIONDATE'] = $member['CreationDate'];
-			$_SESSION['SESS_USER_NAME'] = $member['Username'];
-			$_SESSION['SESS_EXPANSIONS'] = $member['Expansions'];
+			$_SESSION['SESS_MEMBER_ID'] = $member['member_id'];
+			$_SESSION['SESS_FIRST_NAME'] = $member['firstname'];
+			$_SESSION['SESS_LAST_NAME'] = $member['lastname'];
 			session_write_close();
 			header("location: member-index.php");
 			exit();
