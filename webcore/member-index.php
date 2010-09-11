@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Member Index</title>
-<link href="loginmodule.css" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <h1>Welcome <?php echo $_SESSION['SESS_USER_NAME'];?></h1>

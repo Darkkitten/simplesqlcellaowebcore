@@ -55,7 +55,7 @@
 	}
 	
 	//Create query
-	$qry="SELECT * FROM login WHERE login='$login' AND passwd='".md5($_POST['password'])."'";
+	$qry="SELECT * FROM login WHERE Username='$login' AND Password='".md5($_POST['password'])."'";
 	$result=mysql_query($qry);
 	
 	//Check whether the query was successful or not
