@@ -6,7 +6,7 @@ body {
 	font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
 	margin: 0px;
 	padding-left: 50%;
-	background: #f4f4f4 url(images/bg.gif) center repeat-y;
+	background: #f4f4f4 url(../images/bg.gif) center repeat-y;
 	position: absolute;
 }
 
@@ -273,7 +273,7 @@ a:hover {
     font-family: verdana;
     font-size: 11px;
     font-weight: bold;
-    background: url(images/headerBG.jpg) repeat-x;
+    background: url(../images/headerBG.jpg) repeat-x;
 }
 
 /* And this gives the column text some breathing space */
@@ -306,7 +306,7 @@ a:hover {
 
 #tabs8 a {
     float:left;
-    background:url("images/tableft6.gif") no-repeat left top;
+    background:url("../images/tableft6.gif") no-repeat left top;
     margin:0;
     padding:0 0 0 4px;
     text-decoration:none;
@@ -315,7 +315,7 @@ a:hover {
 #tabs8 a span {
     float:left;
     display:block;
-    background:url("images/tabright6.gif") no-repeat right top;
+    background:url("../images/tabright6.gif") no-repeat right top;
     padding:5px 15px 4px 6px;
     color:#eee;
     font-weight: bold;
