@@ -19,9 +19,49 @@
 <link href="themes/<?php echo $theme; ?>/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<h1>Logout </h1>
-<p align="center">&nbsp;</p>
-<h4 align="center" class="err">You have been logged out.</h4>
-<p align="center">Click here to <a href="index.php">Login</a></p>
+<div id="container">
+    <!-- The topmost bar -->
+    <div id="topbar">
+	.:Logged Out:.&nbsp;&nbsp;&nbsp;&nbsp;
+	Click here to <a href="index.php">Login</a>
+    </div>
+    <!-- End of top bar -->
+
+    <!-- This holds the main header -->
+    <div id="headerwrapper">
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logged Out.</h1>        <div>
+            <!-- This is the site slogan -->
+            <h6>
+                &nbsp;
+            </h6>
+            <br />
+        </div>
+        </div>
+	    <div id="tabholder">
+        <div id="tabs8">
+            <ul>
+                <!-- CSS Tabs -->
+		<?php include "themes/$theme/tabs.php";?>
+            </ul>
+        </div>
+    </div>
+    <!-- End of the tabs holder -->
+
+    <!-- This is the login controls holder -->
+
+
+
+    <!-- End of the login controls holder -->
+
+    <!-- Here's the box for the main article -->
+    <div class="articleboxouter">
+        <!-- Here's where you can place ur content -->
+        <div class="articleboxinner2">
+	<?php include "inc/articals.php" ?>
+        </div>
+        <!-- End of content holder -->
+    </div>
+	<?php include "inc/filler.php" ?>
+    </div>
 </body>
 </html>
