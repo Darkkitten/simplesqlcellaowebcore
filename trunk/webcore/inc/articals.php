@@ -1,6 +1,6 @@
 
             <!-- The flower image. 300px by 200px -->
-            <img src="themes/<?php echo $theme; ?>/images/help.jpg" alt="help" class="mainpiccontrol" />
+            <img src="<?php echo $theme; ?>images/help.jpg" alt="help" class="mainpiccontrol" />
 
             <!-- The title for this article -->
             <span class="articleheader">Anarchy Online</span>
@@ -15,7 +15,7 @@ The existence of the soul was proven in 28906. Since the discovery of being able
             <!-- Link to the full article, an arrow and a text link -->
             <span class="readmore">
                 <a href="#">
-                 <img src="themes/<?php echo $theme; ?>/images/arrow.png" alt="read more" class="noborder" />
+                 <img src="<?php echo $theme; ?>images/arrow.png" alt="read more" class="noborder" />
                 </a>
                 <a href="#">Read More</a>
                 <br />&nbsp;

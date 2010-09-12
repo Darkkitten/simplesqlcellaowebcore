@@ -1,6 +1,7 @@
 <?php
 	require_once('configs/config.php');
 	$theme = THEME;
+	$themetabs = $theme.'tabs.php';
 	
 	//Start session
 	session_start();
@@ -16,7 +17,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Logged Out</title>
-<link href="themes/<?php echo $theme; ?>/css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $theme; ?>css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">
@@ -41,7 +42,7 @@
         <div id="tabs8">
             <ul>
                 <!-- CSS Tabs -->
-		<?php include "themes/$theme/tabs.php";?>
+		<?php include "$themetabs";?>
             </ul>
         </div>
     </div>

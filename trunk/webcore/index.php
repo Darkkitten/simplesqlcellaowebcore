@@ -51,7 +51,7 @@
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: themes/$theme/cellao.html");
+		header("location: $theme");
 		exit();
 	}
 	

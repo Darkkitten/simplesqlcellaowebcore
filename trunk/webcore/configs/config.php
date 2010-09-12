@@ -5,5 +5,5 @@
 	define('DB_PASSWORD', '');
 	define('DB_DATABASE', 'cellao');
 // Define other variables
-	define('THEME', 'cellao');
+	define('THEME', 'themes/cellao/');
 ?>
