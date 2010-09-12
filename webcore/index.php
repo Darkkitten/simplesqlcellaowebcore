@@ -3,8 +3,9 @@
 	session_start();
 	
 	//Include database connection details
-	require_once('config.php');
-	
+	require_once('configs/config.php');
+	require_once('engine.php');
+	$theme = THEME;
 	//Array to store validation errors
 	$errmsg_arr = array();
 	
@@ -50,31 +51,47 @@
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: cellao.html");
+		header("location: themes/$theme/cellao.html");
 		exit();
 	}
 	
 	//Create query
-	$qry="SELECT * FROM login WHERE Username='$login' AND Password='".md5($_POST['password'])."'";
+	$qry="SELECT * FROM login WHERE Username='$login'";
 	$result=mysql_query($qry);
-	
+
 	//Check whether the query was successful or not
 	if($result) {
-		if(mysql_num_rows($result) == 1) {
-			//Login Successful
-			session_regenerate_id();
-			$member = mysql_fetch_assoc($result);
-			$_SESSION['SESS_MEMBER_ID'] = $member['member_id'];
-			$_SESSION['SESS_FIRST_NAME'] = $member['firstname'];
-			$_SESSION['SESS_LAST_NAME'] = $member['lastname'];
-			session_write_close();
-			header("location: member-index.php");
-			exit();
-		}else {
-			//Login failed
+	if(mysql_num_rows($result) == 1) {
+		//Login Successful
+		session_regenerate_id();
+		$member = mysql_fetch_assoc($result);
+		$passhash = $member['Password'];
+		if (!webpass($passhash,$password))
+		{
+			// Login failed
 			header("location: login-failed.php");
 			exit();
 		}
+		//CreationDate, Email, Username, Password, Allowed_Characters, Flags, Accountflags, Expansions, GM, FirstName, LastName
+		$_SESSION['SESS_ID'] = $member['ID'];
+		$_SESSION['SESS_CREATIONDATE'] = $member['CreationDate'];
+		$_SESSION['SESS_EMAIL'] = $member['Email'];
+		$_SESSION['SESS_USER_NAME'] = $member['Username'];
+		$_SESSION['SESS_ALLOWED_CHARACTERS'] = $member['allowed_characters'];
+		$_SESSION['SESS_FLAGS'] = $member['flags'];
+		$_SESSION['SESS_ACCOUNTFLAGS'] = $member['accountflags'];
+		$_SESSION['SESS_EXPANSIONS'] = $member['expansions'];
+		$_SESSION['SESS_GM'] = $member['gm'];
+		$_SESSION['SESS_FIRST_NAME'] = $member['FirstName'];
+		$_SESSION['SESS_LAST_NAME'] = $member['LastName'];
+		session_write_close();
+		header("location: member-index.php");
+		exit();
+	}else {
+		//Login failed
+		header("location: login-failed.php");
+		exit();
+	}
 	}else {
 		die("Query failed");
 	}
