@@ -12,8 +12,10 @@
 // 6 = "Lost Eden Pre-Order"
 // 7 = "Legacy of Xan"
 // 8 = "Legacy of Xan Pre-Order"
-// 
-// 0=1, 1=2, 2=4, 3=8, 4=16, 5=32, 6=64, 7=128, 8=256, 9=
+// 9 = "Mail"
+//10 = "PMV Obsidian Edition"
+// 0=1, 1=2, 2=4, 3=8, 4=16, 5=32, 6=64, 7=128, 8=256, 9=512, 10 = 1024
+// So if you want to give someone all expansions is 1+2+4+8+16+32+64+128+256+512+1024 = 2047
 //
 // GM Levels
 // 1-100
