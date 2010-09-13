@@ -77,11 +77,11 @@
 		$_SESSION['SESS_CREATIONDATE'] = $member['CreationDate'];
 		$_SESSION['SESS_EMAIL'] = $member['Email'];
 		$_SESSION['SESS_USER_NAME'] = $member['Username'];
-		$_SESSION['SESS_ALLOWED_CHARACTERS'] = $member['allowed_characters'];
-		$_SESSION['SESS_FLAGS'] = $member['flags'];
-		$_SESSION['SESS_ACCOUNTFLAGS'] = $member['accountflags'];
-		$_SESSION['SESS_EXPANSIONS'] = $member['expansions'];
-		$_SESSION['SESS_GM'] = $member['gm'];
+		$_SESSION['SESS_ALLOWED_CHARACTERS'] = $member['Allowed_Characters'];
+		$_SESSION['SESS_FLAGS'] = $member['Flags'];
+		$_SESSION['SESS_ACCOUNTFLAGS'] = $member['AccountFlags'];
+		$_SESSION['SESS_EXPANSIONS'] = $member['Expansions'];
+		$_SESSION['SESS_GM'] = $member['GM'];
 		$_SESSION['SESS_FIRST_NAME'] = $member['FirstName'];
 		$_SESSION['SESS_LAST_NAME'] = $member['LastName'];
 		session_write_close();

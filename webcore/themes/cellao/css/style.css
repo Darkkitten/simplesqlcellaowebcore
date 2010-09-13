@@ -203,6 +203,25 @@ a {
 a:hover {
 	text-decoration: underline;
 }
+#paper {
+    position: absolute;
+    top: 39px;
+    left: 243px;
+    width: 196px;
+    z-index: 9;
+    background: url(images/paper_bg.gif) repeat-y;
+}
+
+#paper .inner {
+    background: url(images/paper_b.gif) bottom no-repeat;
+    padding: 8px 30px 18px 30px;
+}
+
+#paper .readmore {
+    text-align: left;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
 
 #i_bar {
 	background-color: #555555;

@@ -119,11 +119,11 @@
 	
 	//Extra Detail to fill in the DataBase
 	$creationdate = date('Y-m-d H:i:s');
-	$allowed_characters = 6;
-	$flags = 0;
-	$accountflags = 0;
-	$expansions = '256';
-	$gm = '0';
+	$allowed_characters = "6";
+	$flags = "0";
+	$accountflags = "0";
+	$expansions = "256";
+	$gm = "0";
 	
 	//Create INSERT query
 	if (!$acntpwd = createhash($password)){
@@ -131,11 +131,13 @@
 		header("location: register-exec.php");
 		exit();
 	}else {
-		$qry = "INSERT INTO login(CreationDate, Email, Username, Password, Allowed_Characters, Flags, Accountflags, Expansions, GM, FirstName, LastName) VALUES('$creationdate','$email','$login','$acntpwd','$allowed_characters','$flags','$accountflags','$expansions','$gm','$fname','$lname')";
+		$qry = "INSERT INTO login(CreationDate, Email, Username, Password, Allowed_Characters, Flags, Accountflags, Expansions, GM, FirstName, LastName) VALUES('$creationdate', '$email', '$login', '$acntpwd', '$allowed_characters', '$flags', '$accountflags', '$expansions', '$gm', '$fname', '$lname')";
 		$result = @mysql_query($qry);
 	
 		//Check whether the query was successful or not
 		if($result) {
+		//test result
+		//echo "$creationdate $email $login $acntpwd $allowed_characters $flags $accountflags $expansions $gm $fname $lname";
 			header("location: register-success.php");
 			exit();
 		}else {
