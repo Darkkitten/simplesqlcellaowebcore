@@ -4,17 +4,16 @@ require_once('../auth.php');
 	die("Invalid page for You.");
 }*/
 require_once("../configs/config.php");
-$admin = ADMIN;
-if($admin != $_SESSION['SESS_USER_NAME']) {
+require_once('../engine.php');
+$theme = THEME;
+$themetabs = '../'.$theme.'tabs.php';
+$pUsername = $_REQUEST['pUsername'];
+if($_SESSION['SESS_GM'] != 100) {
 	echo "Go somewhere else...<br>";
 	echo "<a href='../index.php'>HOME</a><br>";
 	echo "<a href='../member-profile.php'>My Profile</a><br>";
 	die('Access denied! Your not an admin!<br>Attempt Logged.');
 }
-require_once('../engine.php');
-$theme = THEME;
-$themetabs = '../'.$theme.'tabs.php';
-$pUsername = $_REQUEST['pUsername'];
 $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
 if(!$link) {
 	die('Failed to connect to server: ' . mysql_error());
@@ -339,7 +338,7 @@ elseif(@$_REQUEST['changeuser'])
     <tr>
       <td width="50%"><b><font color="#555555">GM Level (0 default)</font></b></td>
       <td width="50%"> <b><font color="#555555">
-        <input type="text" name="GM" value="<?php echo $GM?>">
+        <input type="text" name="GM" value="<?php echo $GM?>"> <- 100 for admin.
         </font></b></td>
     </tr>
     <tr> 
