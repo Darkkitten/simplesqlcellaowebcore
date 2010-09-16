@@ -95,19 +95,27 @@
 		$errflag = true;
 	}
 	
-	//Check for duplicate login ID
+	//Check for duplicate login information
 	if($login != '') {
-		$qry = "SELECT * FROM login WHERE username='$login'";
+		$qry = "SELECT * FROM login WHERE Username='$login'";
 		$result = mysql_query($qry);
-		if($result) {
-			if(mysql_num_rows($result) > 0) {
-				$errmsg_arr[] = 'Login ID already in use';
-				$errflag = true;
-			}
+		$member = mysql_fetch_assoc($result);
+		if($member['Email']==$email) {
+			$errmsg_arr[] = 'The Email <b>'.$email.'</b> already exists.<br>Please register with another email.<br>Only one account can be registered oin this server.<br>We have logged this attempt with your IP.<br>You have been warned.';
+			$errflag = true;
+			@mysql_free_result($result);
+		}elseif ($member['Username']==$login) {
+			$errmsg_arr[] = 'The User <b>'.$login.'</b> already exists.<br>Please choose another name.';
+			$errflag = true;
 			@mysql_free_result($result);
 		}
-		else {
-			die("Query failed");
+		$qry = "SELECT * FROM login WHERE FirstName='$fname'";
+		$result = mysql_query($qry);
+		$member = mysql_fetch_assoc($result);
+		if ($member['FirstName']==$fname && $member['LastName']==$lname) {
+			$errmsg_arr[] = 'The User <b>'.$fname.' '.$lname.'</b> already exists.<br>Please choose another name.';
+			$errflag = true;
+			@mysql_free_result($result);
 		}
 	}
 	
@@ -119,12 +127,12 @@
 		exit();
 	}
 	
-	//Extra Detail to fill in the DataBase
+	//Extra Detail to fill in the User fields
 	$creationdate = date('Y-m-d H:i:s');
 	$allowed_characters = "6";
 	$flags = "0";
 	$accountflags = "0";
-	$expansions = "256";
+	$expansions = "255";
 	$gm = "0";
 	
 	//Create INSERT query

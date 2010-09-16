@@ -1,0 +1,363 @@
+<?php
+require_once('../auth.php');
+/*if($_REQUEST['password'] != "compaq") {
+	die("Invalid page for You.");
+}*/
+require_once("../configs/config.php");
+$admin = ADMIN;
+if($admin != $_SESSION['SESS_USER_NAME']) {
+	echo "Go somewhere else...<br>";
+	echo "<a href='../index.php'>HOME</a><br>";
+	echo "<a href='../member-profile.php'>My Profile</a><br>";
+	die('Access denied! Your not an admin!<br>Attempt Logged.');
+}
+require_once('../engine.php');
+$theme = THEME;
+$themetabs = '../'.$theme.'tabs.php';
+$pUsername = $_REQUEST['pUsername'];
+$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if(!$link) {
+	die('Failed to connect to server: ' . mysql_error());
+}
+/////////////////////////////////////
+function getPF($albid) {
+$xmlFile = new DOMDocument();
+$xmlFile->load("../inc/Playfields.xml");
+$xml_album = $xmlFile->getElementsByTagName("Playfield");
+$i = 0;
+while ($xml_album->item($i) && $xml_album->item($i)->getAttribute('id') != $albid) {
+	$i += 1;
+}		
+$album = $xml_album->item($i); 
+$children=$album->childNodes;
+   foreach($children as $child) {
+	if($child->nodeType==XML_ELEMENT_NODE) {
+		$PF_value = $child->nodeValue;
+		return $PF_value;
+	}
+   }
+}
+//////////////////////////////////////
+$xdoc = new DOMDocument();
+$xdoc->load('itemsicons.xml');
+$xpath = new DOMXPath($xdoc); 
+
+function id2img($uid) {
+    global $xdoc;
+    global $xpath;
+    global $ids;
+    global $i;
+    if(!$xdoc) {
+	die("error");
+    }
+    $i=0;
+    $nodeList = $xpath->query('/item2icon/cellao', $xdoc);
+    foreach ($nodeList as $node) {
+    	$theid = $node->getAttribute('id');
+	$ids[$theid]["name"] = $node->getAttribute('name');
+	$ids[$theid]["img"] = $node->getAttribute('img');
+    	$i++;
+    }
+    $qry = ("SELECT * FROM charactersinventory WHERE ID = '$uid'");
+    $result=mysql_query($qry);
+    if ($row = mysql_fetch_assoc($result)) {
+    	do {			  	  
+    		$id_num = $row["LowID"];
+    		$id_name = $row["Name"];
+    		$results = "<img src='http://auno.org/res/aoicons/".$ids[$id_num]["img"].".gif' title='".$id_num.": ".$ids[$id_num]["name"]."' alt='".$id_num."'>";
+    		echo $results;
+	} while ($row = mysql_fetch_assoc($result));
+    }
+    // <cellao nodeid=27 id=22064 img=13253 name=Assault-Issue Omni-Pol Body Armor />
+}
+//////////////////////////////////////
+//Select database
+$db = mysql_select_db(DB_DATABASE);
+if(!$db) {
+	die("Unable to select database");
+}
+
+?>
+<html>
+<head>
+<title>CellAO - [User] Administration Panel</title>
+</head>
+<body>
+<?php
+if(@$_REQUEST['changeme'])
+{
+
+$userID = $_REQUEST['userID'];
+$Email = $_REQUEST['Email'];
+$Username = $_REQUEST['Username'];
+$Allowed_Characters = $_REQUEST['Allowed_Characters'];
+$Flags = $_REQUEST['Flags'];
+$AccountFlags = $_REQUEST['AccountFlags'];
+$Expansions = $_REQUEST['Expansions'];
+$GM = $_REQUEST['GM'];
+$FirstName = $_REQUEST['FirstName'];
+$LastName = $_REQUEST['LastName'];
+
+	$qry=("UPDATE login SET Email='$Email', Username='$Username', Allowed_Characters='$Allowed_Characters', Flags='$Flags', AccountFlags='$AccountFlags', Expansions='$Expansions', GM='$GM', FirstName='$FirstName', LastName='$LastName' WHERE ID='$userID'");
+	$result=mysql_query($qry);
+	if(!$result) {
+		die("Query Failed: ". mysql_error());
+	}
+	else
+	{
+	echo "<table width=\"100%\" height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+	  <tr>
+	  <td align=center valign=middle height=\"100%\" width=\"100%\">
+		  <table border=\"0\" cellspacing=\"1\" cellpadding=\"0\">
+		  <tr>
+		  <td colspan=\"2\" align=center>
+		  	<b>User '$Username' has been changed!</b>
+		  </td>
+		  </tr>
+		  <tr>
+		  <td colspan=\"2\" align=center>
+		  	<form><input type='button' onClick=\"parent.location='administrator.php?pUsername=$Username&changeuser=yes'\" value='OK'></form>
+		  </td>
+		  </tr>
+		  </table>
+		 </td>
+		 </tr>
+		 </table>";
+	}
+}
+elseif(@$_REQUEST['changeuser'])
+{
+	$SESS_ID = $_SESSION['SESS_ID'];
+	
+	$qry=("SELECT ID FROM characters WHERE Username='$pUsername'");
+	$result = mysql_query($qry);
+	$member = mysql_fetch_assoc($result);
+	$ID = $member['ID'];
+	
+	$qry=("SELECT ID FROM login WHERE Username='$pUsername'");
+	$result = mysql_query($qry);
+	$member = mysql_fetch_assoc($result);
+	$userID = $member['ID'];
+	
+	$qry=("SELECT * FROM login WHERE Username='$pUsername'");
+	$result=mysql_query($qry);
+	while ($row = mysql_fetch_assoc($result)) {
+		$eFirstName = $row["FirstName"];
+		$eLastName = $row["LastName"];
+		$eUsername = $row["Username"];
+		$CreationDate = $row["CreationDate"];
+		$eEmail = $row["Email"];
+		$eAllowed_Characters = $row["Allowed_Characters"];
+		$eFlags = $row["Flags"];
+		$eAccountFlags = $row["AccountFlags"];
+		$eExpansions = $row["Expansions"];
+		$eGM = $row["GM"];
+		
+		if($eFirstName == "") {
+			$FirstName = "Please select a First Name";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$FirstName = $row["FirstName"];}
+		}
+		
+		if($eLastName == "") {
+			$LastName = "Please select a Last Name";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$LastName = $row["LastName"];}
+		}
+				
+		if($eUsername == "") {
+			$Username = "Please select a Username";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$Username = $row["Username"];}
+		}
+		
+		if($eEmail == "") {
+			$Email = "Please type an Email";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$Email = $row["Email"];}
+		}
+		
+		if($eAllowed_Characters == "") {
+			$Allowed_Characters = "Please input Max Characters";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$Allowed_Characters = $row["Allowed_Characters"];}
+		}
+		
+		if($eFlags == "") {
+			$Flags = "Please input other Flags";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$Flags = $row["Flags"];}
+		}
+		
+		if($eAccountFlags == "") {
+			$AccountFlags = "Please input Account Flags";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$AccountFlags = $row["AccountFlags"];}
+		}
+		
+		if($eExpansions == "") {
+			$Expansions = "Please Type Exansion bits";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$Expansions = $row["Expansions"];}
+		}
+		
+		if($eGM == "") {
+			$GM = "Please select a GM level";
+		} else {
+			$qry = ("SELECT * FROM login WHERE Username = '$pUsername'");
+			$result=mysql_query($qry);
+			if ($row = mysql_fetch_assoc($result)) {$GM = $row["GM"];}
+		}
+	}
+?>
+<form id="form1" name="form1" action="administrator.php?changeme=true&userID=<?php echo $userID;?>" method="post">
+<input type="hidden" name="id" value="<?php echo $ID?>">
+  <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td align=center valign=middle height="100%" width="100%">
+  <table width="600" border="1" cellspacing="0" cellpadding="3">
+    <tr style=background:#3366ee;>
+      <td colspan="2">
+        <div align="center"><b>Editing User: <font color="white"><?php echo $Username?></font></b></div>
+      </td>
+    </tr>
+    <tr>
+    	<td colspan="2"><center><b>LOCATION</b></center></td>
+    </tr>
+    <tr> 
+      <td width="50%"><b><font color="#555555">Playfield</font></b></td>
+      <td width="50%"><b><font color="#555555">
+			  <?php
+			  $qry = ("SELECT * FROM characters WHERE Username = '$Username'");
+			  $result=mysql_query($qry);
+			  $row = mysql_fetch_assoc($result);
+			  if ($row["playfield"] == "") {
+			  	print "?";
+			  } else {
+			  	$userPF = $row["playfield"];
+			  	print getPF($userPF);
+			  }
+			  ?>
+        </font></b></td>
+    </tr>
+    <tr>
+      <td colspan="2"><center><b>INVENTORY</b></center></td>
+    </tr>
+    <tr> 
+      <td width="50%"><b><font color="#555555">Users Inventory</font></b></td>
+      <td width="50%"><b><font color="#555555">
+	  		  <?php
+	  		  print ("<select id=\"inventory\" onchange=\"sendIt(this);\">");
+			  $qry = ("SELECT * FROM charactersinventory WHERE ID = '$ID'");
+			  $result=mysql_query($qry);
+			  if ($row = mysql_fetch_assoc($result)) {
+				  do {				  	  
+					  $id_num = $row["LowID"];
+					  print ("<option value=$id_num>$id_num</option>");
+				  } while ($row = mysql_fetch_assoc($result));
+			  }
+			  print ("</select>");
+			  ?>
+        </font></b></td>
+    <tr>
+    	<td colspan="2">
+    		<div align="center"><?php
+ 		print ("<div id=\"doh\">");
+		$imagesrc = id2img($ID);
+		echo $imagesrc;
+		print ("</div>");
+	?></div>
+    	</td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">User Name</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="Username" value="<?php echo $Username?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">First Name</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="FirstName" value="<?php echo $FirstName?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">Last Name</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="LastName" value="<?php echo $LastName?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">Email</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="Email" value="<?php echo $Email?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">Max Allowed Characters</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="Allowed_Characters" value="<?php echo $Allowed_Characters?>">
+        </font></b></td>
+    </tr>
+    <tr>
+    	<td colspan="2"><center><b>ATTRIBUTES</b></center></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">Flags</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="Flags" value="<?php echo $Flags?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">Account Flags</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="AccountFlags" value="<?php echo $AccountFlags?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">Expansions</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="Expansions" value="<?php echo $Expansions?>">
+        </font></b></td>
+    </tr>
+    <tr>
+      <td width="50%"><b><font color="#555555">GM Level (0 default)</font></b></td>
+      <td width="50%"> <b><font color="#555555">
+        <input type="text" name="GM" value="<?php echo $GM?>">
+        </font></b></td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <div align="center"> 
+          <input type="submit" name="submit" value="Change"> 
+          <input type="button" onClick="parent.location='delete_users_character.php?character=<?php echo $Username?>'" value="Delete this Character"> 
+          <input type="button" onClick="parent.location='admin_users_Edit_Users_Character.php'" value="Back to list">
+      	</div>
+      </td>
+    </tr>
+  </table>
+  </td>
+  </tr>
+  </table>
+</form>
+<?php
+}
+?>
+</body>
+</html>
