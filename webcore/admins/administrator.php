@@ -62,12 +62,44 @@ function id2img($uid) {
     if ($row = mysql_fetch_assoc($result)) {
     	do {			  	  
     		$id_num = $row["LowID"];
-    		$id_name = $row["Name"];
     		$results = "<img src='http://auno.org/res/aoicons/".$ids[$id_num]["img"].".gif' title='".$id_num.": ".$ids[$id_num]["name"]."' alt='".$id_num."'>";
     		echo $results;
 	} while ($row = mysql_fetch_assoc($result));
     }
     // <cellao nodeid=27 id=22064 img=13253 name=Assault-Issue Omni-Pol Body Armor />
+}
+//////////////////////////////////////
+//////////////////////////////////////
+$xdocs = new DOMDocument();
+$xdocs->load('../inc/Stats.xml');
+$xpaths = new DOMXPath($xdocs); 
+
+function id2stats($uid) {
+    global $xdocs;
+    global $xpaths;
+    global $idss;
+    global $i;
+    if(!$xdocs) {
+	die("error");
+    }
+    $i=0;
+    $nodeList = $xpaths->query('/Stats/Stat', $xdocs);
+    foreach ($nodeList as $node) {
+    	$theids = $node->getAttribute('id');
+	$idss[$theids]["Name"] = $node->getAttribute('Name');
+    	$i++;
+    }
+    $qry = ("SELECT * FROM characters_stats WHERE ID = '$uid'");
+    $result=mysql_query($qry);
+    if ($row = mysql_fetch_assoc($result)) {
+    	do {			  	  
+    		$statid = $row["Stat"];
+    		$statvalue = $row["Value"];
+    		$results = "<tr><td width=\"10%\">Stat: ".$idss[$statid]["Name"]."</td><td width=\"90%\">Value: ".$statvalue."</td></tr>";
+    		echo $results;
+	} while ($row = mysql_fetch_assoc($result));
+    }
+    // <Stat id="10" Name="ProfessionLevel">
 }
 //////////////////////////////////////
 //Select database
@@ -275,15 +307,16 @@ elseif(@$_REQUEST['changeuser'])
 			  ?>
         </font></b></td>
     <tr>
-    	<td colspan="2">
-    		<div align="center"><?php
- 		print ("<div id=\"doh\">");
+    		<td colspan="2"><?php
+ 		print ("<div align=\"center\" id=\"id2img\">");
 		$imagesrc = id2img($ID);
 		echo $imagesrc;
 		print ("</div>");
-	?></div>
-    	</td>
-    </tr>
+		?></td><?php
+		$statsrc = id2stats($ID);
+		echo $statsrc;
+		?>
+    </tr></tr></tr>
     <tr>
       <td width="50%"><b><font color="#555555">User Name</font></b></td>
       <td width="50%"> <b><font color="#555555">
