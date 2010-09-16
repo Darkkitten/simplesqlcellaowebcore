@@ -6,6 +6,5 @@
 	define('DB_DATABASE', 'cellao');
 // Define other variables
 	define('THEME', 'themes/cellao/');
-	define('ADMIN', '~YourName~');
 ?>
 ?>

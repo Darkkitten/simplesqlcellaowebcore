@@ -25,7 +25,7 @@
     <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login Successful!</h1>        <div>
             <!-- This is the site slogan -->
             <h6>
-                <a href="admins/administrator.php?pUsername=test&changeuser=yes&password=">Admin Area</a>
+                <a href="admins/administrator.php?pUsername=<?php echo $_SESSION['SESS_USER_NAME']; ?>&changeuser=yes&password=">Admin Area</a>
             </h6>
             <br />
         </div>
