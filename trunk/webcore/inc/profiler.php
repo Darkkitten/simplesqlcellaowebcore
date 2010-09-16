@@ -22,48 +22,13 @@
 // -GM Levels
 // 1-100
 // 100=blackmanes statbuffer usable
-$exp="";
-$exps="";
-$Expansion="";
+
 $exp = $_SESSION['SESS_EXPANSIONS'];
-$exps = (($exp + $exp) -1);
-switch ($exps) {
-	case 1:
-	    $Expansion = "Notum Wars";
-	    break;
-	case 3:
-	    $Expansion = "Shadow Lands";
-	    break;
-	case 7:
-	    $Expansion = "Shadow Lands Pre-Order";
-	    break;
-	case 15:
-	    $Expansion = "Alien Invasion";
-	    break;
-	case 31:
-	    $Expansion = "Alien Invasion Pre-Order";
-	    break;
-	case 63:
-	    $Expansion = "Lost Eden";
-	    break;
-	case 127:
-	    $Expansion = "Lost Eden Pre-Order";
-	    break;
-	case 255:
-	    $Expansion = "Legacy of Xan";
-	    break;
-	case 511:
-	    $Expansion = "Legacy of Xan Pre-Order";
-	    break;
-	case 1023:
-	    $Expansion = "Mail";
-	    break;
-	case 2047:
-	    $Expansion = "PMV Obsidian Edition";
-	    break;
-	default:
-            $Expansion = "Notum Wars";
-            break;
+$Expansion = array('NW', 'SL', 'SL Preorder', 'AI', 'AI Preorder', 'LE', 'LE Preorder', 'LoX', 'LoX Preorder', 'Mail', 'PMV Obsidian Edition');
+for ($i = 0; $i < sizeof($Expansion); $i++) {
+	if ($exp & pow(2, $i)) {
+ 		$Expansions .= $Expansion[$i] . ', ';
+	}
 }
 echo "My User ID: <b>".$_SESSION['SESS_ID']."<br></b>";
 echo "Created on: <b>".$_SESSION['SESS_CREATIONDATE']."<br></b>";
@@ -72,7 +37,7 @@ echo "My User Name: <b>".$_SESSION['SESS_USER_NAME']."<br></b>";
 echo "My Max Chars: <b>".$_SESSION['SESS_ALLOWED_CHARACTERS']."<br></b>";
 echo "My Gen Flags: <b>".$_SESSION['SESS_FLAGS']."<br></b>";
 echo "My Acnt Flags: <b>".$_SESSION['SESS_ACCOUNTFLAGS']."<br></b>";
-echo "My Expansions: <b>(".$exp."/".$exps.") ".$Expansion."<br></b>";
+echo "My Expansions: <b>(".$exp.") ".$Expansions."<br></b>";
 echo "My GM LvL: <b>".$_SESSION['SESS_GM']."<br></b>";
 echo "My First Name: <b>".$_SESSION['SESS_FIRST_NAME']."<br></b>";
 echo "My Last Name: <b>".$_SESSION['SESS_LAST_NAME']."<br></b>";

@@ -1,5 +1,4 @@
 <?php
-	require_once('auth.php');
 	require_once('configs/config.php');
 	$theme = THEME;
 	$themetabs = $theme.'tabs.php';
