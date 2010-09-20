@@ -378,8 +378,8 @@ elseif(@$_REQUEST['changeuser'])
       <td colspan="2"> 
         <div align="center"> 
           <input type="submit" name="submit" value="Change"> 
-          <input type="button" onClick="parent.location='delete_users_character.php?character=<?php echo $Username?>'" value="Delete this Character"> 
-          <input type="button" onClick="parent.location='admin_users_Edit_Users_Character.php'" value="Back to list">
+          <input type="button" onClick="#" value="Delete this Character"> 
+          <input type="button" onClick="#" value="Back to list">
       	</div>
       </td>
     </tr>
