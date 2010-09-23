@@ -7,7 +7,11 @@ require_once("../configs/config.php");
 require_once('../engine.php');
 $theme = THEME;
 $themetabs = '../'.$theme.'tabs.php';
-$pUsername = $_REQUEST['pUsername'];
+if(!$_REQUEST['pUsername']) {
+	$pUsername = $_SESSION['SESS_USER_NAME'];
+} else {
+	$pUsername = $_REQUEST['pUsername'];
+}
 if($_SESSION['SESS_GM'] != 100) {
 	echo "Go somewhere else...<br>";
 	echo "<a href='../index.php'>HOME</a><br>";
@@ -112,8 +116,42 @@ if(!$db) {
 <html>
 <head>
 <title>CellAO - [User] Administration Panel</title>
+<link href="../<?php echo $theme; ?>css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+<div id="container">
+    <!-- The topmost bar -->
+    <div id="topbar">
+	.:<font color='EEE'>Welcome, <?php echo $_SESSION['SESS_USER_NAME'];?></font>:.&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="../admins/administrator.php?pUsername=<?php echo $_SESSION['SESS_USER_NAME']; ?>&changeuser=yes&password=">Administration</a> | <a href="../logout.php">Logout</a>
+    </div>
+    <!-- End of top bar -->
+
+    <!-- This holds the main header -->
+    <div id="headerwrapper">
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Administration</h1>        <div>
+            <!-- This is the site slogan -->
+            <h6>
+                &nbsp;
+            </h6>
+            <br />
+        </div>
+        </div>
+	    <div id="tabholder">
+        <div id="tabs8">
+            <ul>
+                <!-- CSS Tabs -->
+		<?php include "$themetabs";?>
+            </ul>
+        </div>
+    </div>
+    <div class="articleboxinner4">
+	&nbsp;
+        </div>
+        <!-- Here's the box for the main article -->
+    <div class="articleboxouter">
+        <!-- Here's where you can place ur content -->
+        <div class="articleboxinner3">
 <?php
 if(@$_REQUEST['changeme'])
 {
@@ -257,23 +295,24 @@ elseif(@$_REQUEST['changeuser'])
 		}
 	}
 ?>
-<form id="form1" name="form1" action="administrator.php?changeme=true&userID=<?php echo $userID;?>" method="post">
-<input type="hidden" name="id" value="<?php echo $ID?>">
-  <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <table width="600" height="100%" align=center valign=middle border="0" cellpadding="0" cellspacing="0">
 	<tr>
 	<td align=center valign=middle height="100%" width="100%">
   <table width="600" border="1" cellspacing="0" cellpadding="3">
     <tr style=background:#3366ee;>
       <td colspan="2">
-        <div align="center"><b>Editing User: <font color="white"><?php echo $Username?></font></b></div>
+        <div align="center"><b>Editing User: <font color="red"><form id="form2" name="form2" action="administrator.php">
+	<input type="hidden" name="changeuser" value="yes"><font color=Green size=2>Username: </font><input type="text" name="pUsername" value="<?php echo $Username?>"></font><input type="submit" name="submit" value='OK'></form></div>
       </td>
     </tr>
+    <form id="form1" name="form1" action="administrator.php?changeme=true&userID=<?php echo $userID;?>" method="post">
+	<input type="hidden" name="id" value="<?php echo $ID?>">
     <tr>
     	<td colspan="2"><center><b>LOCATION</b></center></td>
     </tr>
     <tr> 
-      <td width="50%"><b><font color="#555555">Playfield</font></b></td>
-      <td width="50%"><b><font color="#555555">
+      <td width="50%"><font color="#555555">Playfield</font></b></td>
+      <td width="50%"><font color="#555555">
 			  <?php
 			  $qry = ("SELECT * FROM characters WHERE Username = '$Username'");
 			  $result=mysql_query($qry);
@@ -285,14 +324,14 @@ elseif(@$_REQUEST['changeuser'])
 			  	print getPF($userPF);
 			  }
 			  ?>
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
       <td colspan="2"><center><b>INVENTORY</b></center></td>
     </tr>
     <tr> 
-      <td width="50%"><b><font color="#555555">Users Inventory</font></b></td>
-      <td width="50%"><b><font color="#555555">
+      <td width="50%"><font color="#555555">Users Inventory</font></b></td>
+      <td width="50%"><font color="#555555">
 	  		  <?php
 	  		  print ("<select id=\"inventory\" onchange=\"sendIt(this);\">");
 			  $qry = ("SELECT * FROM charactersinventory WHERE ID = '$ID'");
@@ -305,7 +344,7 @@ elseif(@$_REQUEST['changeuser'])
 			  }
 			  print ("</select>");
 			  ?>
-        </font></b></td>
+        </font></td>
     <tr>
     		<td colspan="2"><?php
  		print ("<div align=\"center\" id=\"id2img\">");
@@ -318,68 +357,68 @@ elseif(@$_REQUEST['changeuser'])
 		?>
     </tr></tr></tr>
     <tr>
-      <td width="50%"><b><font color="#555555">User Name</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">User Name</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="Username" value="<?php echo $Username?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">First Name</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">First Name</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="FirstName" value="<?php echo $FirstName?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">Last Name</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">Last Name</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="LastName" value="<?php echo $LastName?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">Email</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">Email</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="Email" value="<?php echo $Email?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">Max Allowed Characters</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">Max Allowed Characters</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="Allowed_Characters" value="<?php echo $Allowed_Characters?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
     	<td colspan="2"><center><b>ATTRIBUTES</b></center></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">Flags</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">Flags</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="Flags" value="<?php echo $Flags?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">Account Flags</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">Account Flags</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="AccountFlags" value="<?php echo $AccountFlags?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">Expansions</font></b></td>
-      <td width="50%"> <b><font color="#555555">
+      <td width="50%"><font color="#555555">Expansions</font></td>
+      <td width="50%"><font color="#555555">
         <input type="text" name="Expansions" value="<?php echo $Expansions?>">
-        </font></b></td>
+        </font></td>
     </tr>
     <tr>
-      <td width="50%"><b><font color="#555555">GM Level (0 default)</font></b></td>
-      <td width="50%"> <b><font color="#555555">
-        <input type="text" name="GM" value="<?php echo $GM?>"> <- 100 for admin.
-        </font></b></td>
+      <td width="50%"><font color="#555555">GM Level (0 default)</font></td>
+      <td width="50%"> <b><font size=2 color="#555555">
+        <input type="text" name="GM" value="<?php echo $GM?>"> *100 for admin.
+        </font></td>
     </tr>
     <tr> 
       <td colspan="2"> 
         <div align="center"> 
           <input type="submit" name="submit" value="Change"> 
-          <input type="button" onClick="#" value="Delete this Character"> 
-          <input type="button" onClick="#" value="Back to list">
+          <input type="button" onClick="#" value="Delete <?php echo $Username?>" "onmouseover="this.value='Not Implimented'" onmouseout="this.value='Delete <?php echo $Username?>'"> 
+          <input type="button" onClick="#" value="Back to list" "onmouseover="this.value='Not Implimented'" onmouseout="this.value='Back to list'">
       	</div>
       </td>
     </tr>
@@ -391,5 +430,13 @@ elseif(@$_REQUEST['changeuser'])
 <?php
 }
 ?>
+<div class="articleboxouter">
+        <!-- Here's where you can place ur content -->
+        <div class="articleboxinner2">
+	&nbsp;
+        </div>
+        <!-- End of content holder -->
+    </div>
+    </div>
 </body>
 </html>
