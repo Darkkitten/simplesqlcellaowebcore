@@ -6,7 +6,6 @@ body {
 	font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
 	margin: 0px;
 	padding-left: 50%;
-	background: #f4f4f4 url(../images/bg.gif) center repeat-y;
 	position: absolute;
 }
 
@@ -135,7 +134,18 @@ h6 {
     text-align: justify;
     height: 220px;
 }
-
+.articleboxinner4 {
+    width: auto;
+    line-height: 100%;
+    color: #D8D8D2;
+    padding: 15px 6px 0px 6px;
+    background-color: #555555;
+    border:0px solid #efefef;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    text-align: justify;
+    height: 40px;
+}
 /* The title style for the main article */
 .articleheader
 {
@@ -143,6 +153,17 @@ h6 {
     font-size: 18px;
     font-weight: bold;
     border-bottom: 0px solid #CCC;
+}
+
+.table
+{
+    border-collapse:collapse;
+}
+.th, td
+{
+    margin-right: 30px;
+    background-color: #D8D8D2;
+    color: #555555;
 }
 
 /* This will style the read more thing at the bottom */
